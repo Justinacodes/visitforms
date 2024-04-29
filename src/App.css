@@ -1,0 +1,49 @@
+.form{
+    padding: 10px;
+  width: 50rem;
+
+} 
+.formContainer{
+  margin-left: 25%;
+  margin-right: 25%;
+}
+#email{
+  margin-bottom: 15px;
+}
+#btn{
+margin-top: 20px;
+    background-color: #000;
+    color: #fff;
+    border: #000 1px solid;
+    padding: 10px;
+    width: 150px;
+    border-radius: 10px;
+    margin-left: 40rem;
+}
+.visitorType {
+  border: 1px solid #ced4da;
+  border-radius: 5px;
+
+}
+
+.visitorType label {
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.radioContainer {
+  display: flex;
+}
+
+.radioContainer .form-check {
+  flex: 1;
+  border-right: 1px solid #ced4da;
+}
+
+.radioContainer .form-check:last-child {
+  border-right: none;
+}
+.error{
+  color: red;
+}
+

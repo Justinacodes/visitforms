@@ -5,23 +5,24 @@ import { useMask } from "@react-input/mask";
 
 function FormFloatingBasicExample() {
   const [formData, setFormData] = useState({
-    fullName: "",
-    phoneNumber: "",
-    emailAddress: "",
-    visitorType: "",
-    whoToSeePhoneNumber: "",
-    whoToSeeName: "",
-    purposeForVisit: "",
-    comments: "",
+    visitorname: "",
+    visitorphone: "",
+    visitoremail: "",
+    // visitorType: "",
+    hostphoneno: "",
+    //hostname: "",
+    //used hostemailaddress from the endpoint for the comment field
+    hostemailaddress: "",
   });
+
   const [validationErrors, setValidationErrors] = useState({});
   const [error, setError] = useState("");
   const [validPhoneNumbers, setValidPhoneNumbers] = useState([]);
   const [validNames, setValidNames] = useState([]);
-  const [phoneMask, setPhoneMask] = useState("+234 (___) ___-__-__"); // Default mask for Nigeria
+  const [phoneMask, setPhoneMask] = useState("+234 (___) ___-____"); // Default mask for Nigeria
   const apiUrl = "http://ezapi.issl.ng:3333/employee";
   const phoneNumbersUrl = "http://ezapi.issl.ng:3333/employeephone";
-  const visitationRequest = "http://ezapi.issl.ng:3333/visitationrequest"
+  const visitationRequest = "http://ezapi.issl.ng:3333/visitationrequest";
 
   useEffect(() => {
     // Fetching employee phone numbers
@@ -32,11 +33,11 @@ function FormFloatingBasicExample() {
       )
       .catch((err) => console.log(err));
 
-    // Fetching employee details
-    fetch(apiUrl)
-      .then((response) => response.json())
-      .then((data) => setValidNames(data.map((record) => record.name)))
-      .catch((err) => console.log(err));
+    //Fetching employee details
+    // fetch(apiUrl)
+    //   .then((response) => response.json())
+    //   .then((data) => setValidNames(data.map((record) => record.name)))
+    //   .catch((err) => console.log(err));
   }, []);
 
   const handleChange = (e) => {
@@ -61,69 +62,68 @@ function FormFloatingBasicExample() {
     }));
   };
 
- const handleSubmit = async (e) => {
-   e.preventDefault();
-   // Basic validation: checking if all required fields are filled
-   const errors = {};
-   for (const key in formData) {
-     if (formData[key] === "") {
-       errors[key] = "Please fill out this field";
-     }
-   }
-   setValidationErrors(errors);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    // Basic validation: checking if all required fields are filled
+    const errors = {};
+    for (const key in formData) {
+      if (formData[key] === "") {
+        errors[key] = "Please fill out this field";
+      }
+    }
+    setValidationErrors(errors);
 
-   // Validate whoToSeeName and whoToSeePhoneNumber against fetched data
-   if (!validPhoneNumbers.includes(formData.whoToSeePhoneNumber)) {
-     setError("Invalid phone number provided");
-     return;
-   }
-   if (!validNames.includes(formData.whoToSeeName)) {
-     setError("Invalid name provided");
-     return;
-   }
+    //Validate hostname and hostphoneno against fetched data
+    if (!validPhoneNumbers.includes(formData.hostphoneno)) {
+      setError("Invalid phone number provided");
+      return;
+    }
+    // if (!validNames.includes(formData.hostname)) {
+    //   setError("Invalid name provided");
+    //   return;
+    // }
 
-   // Submit form data to the visitationRequest endpoint
-   try {
-     const response = await fetch(visitationRequest, {
-       method: "POST",
-       headers: {
-         "Content-Type": "application/json",
-       },
-       body: JSON.stringify(formData),
-     });
-     if (!response.ok) {
-       throw new Error("Failed to submit form data");
-     }
-     console.log("Form data submitted successfully");
-     // Reset form data
-     setFormData({
-       fullName: "",
-       phoneNumber: "",
-       emailAddress: "",
-       visitorType: "",
-       whoToSeePhoneNumber: "",
-       whoToSeeName: "",
-       purposeForVisit: "",
-       comments: "",
-     });
-     // Reset errors
-     setError("");
-     setValidationErrors({});
-   } catch (error) {
-     console.error("Error submitting form data:", error.message);
-     setError("Failed to submit form data");
-   }
- };
+    // Submit form data to the visitationRequest endpoint
+    try {
+      const response = await fetch(visitationRequest, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      if (!response.ok) {
+        throw new Error("Failed to submit form data");
+      }
+      console.log("Form data submitted successfully");
+      // Reset form data
+      setFormData({
+        visitorname: "",
+        visitorphone: "",
+        visitoremail: "",
+        // visitorType: "",
+        hostphoneno: "",
+        //hostname: "",
+        hostemailaddress: "",
+      });
+      // Reset errors
+      setError("");
+      setValidationErrors({});
+    } catch (error) {
+      console.error("Error submitting form data:", error.message);
+      setError("Failed to submit form data");
+    }
+  };
 
   useEffect(() => {
-    if (formData.phoneNumber.startsWith("+234")) {
+    if (formData.visitorphone.startsWith("+234")) {
       // Set mask for Nigeria
-      setPhoneMask("+234 (___) ___-__-__");
+      setPhoneMask("+234 (___) ___-____");
     } else {
       // Default mask
-      setPhoneMask("+234 (___) ___-__-__");
+      setPhoneMask("+234 (___) ___-____");
     }
-  }, [formData.phoneNumber]);
+  }, [formData.visitorphone]);
 
   const phoneNumberRef = useMask({
     mask: phoneMask,
@@ -147,7 +147,7 @@ function FormFloatingBasicExample() {
         <div className="form">
           <Form onSubmit={handleSubmit}>
             <FloatingLabel
-              controlId="fullName"
+              controlId="visitorname"
               label="Visitor's Full Name"
               className="mb-3"
             >
@@ -155,16 +155,15 @@ function FormFloatingBasicExample() {
                 type="text"
                 placeholder="Visitor's Full Name"
                 className="mt-2"
-                value={formData.fullName}
+                value={formData.visitorname}
                 onChange={handleChange}
               />
-              {validationErrors.fullName && (
-                <div className="error">{validationErrors.fullName}</div>
+              {validationErrors.visitorname && (
+                <div className="error">{validationErrors.visitorname}</div>
               )}
             </FloatingLabel>
-
             <FloatingLabel
-              controlId="phoneNumber"
+              controlId="visitorphone"
               label="Phone Number"
               className="mb-3"
             >
@@ -172,31 +171,30 @@ function FormFloatingBasicExample() {
                 type="tel"
                 ref={phoneNumberRef}
                 placeholder="Phone Number"
-                value={formData.phoneNumber}
+                value={formData.visitorphone}
                 onChange={handleChange}
                 // pattern="[0-9]*"
               />
-              {validationErrors.phoneNumber && (
-                <div className="error">{validationErrors.phoneNumber}</div>
+              {validationErrors.visitorphone && (
+                <div className="error">{validationErrors.visitorphone}</div>
               )}
             </FloatingLabel>
-
             <FloatingLabel
-              controlId="emailAddress"
+              controlId="visitoremail"
               label="Email Address"
               className="mb-3"
             >
               <Form.Control
                 type="email"
                 placeholder="Email Address"
-                value={formData.emailAddress}
+                value={formData.visitoremail}
                 onChange={handleChange}
               />
-              {validationErrors.emailAddress && (
-                <div className="error">{validationErrors.emailAddress}</div>
+              {validationErrors.visitoremail && (
+                <div className="error">{validationErrors.visitoremail}</div>
               )}
             </FloatingLabel>
-
+            {/* /*
             <div className="visitorType mb-3">
               <label htmlFor="" className="floatingLabel">
                 Visitor Type
@@ -238,43 +236,39 @@ function FormFloatingBasicExample() {
                 <div className="error">{validationErrors.visitorType}</div>
               )}
             </div>
-
+*/}{" "}
             <FloatingLabel
-              controlId="whoToSeePhoneNumber"
+              controlId="hostphoneno"
               label="Who to see (Phone No)"
               className="mb-3"
             >
               <Form.Control
                 type="tel"
-                //ref={whoToSeePhoneNumberRef}
+                ref={whoToSeePhoneNumberRef}
                 placeholder="Phone Number"
-                value={formData.whoToSeePhoneNumber}
+                value={formData.hostphoneno}
                 onChange={handleChange}
               />
-              {validationErrors.whoToSeePhoneNumber && (
-                <div className="error">
-                  {validationErrors.whoToSeePhoneNumber}
-                </div>
+              {validationErrors.hostphoneno && (
+                <div className="error">{validationErrors.hostphoneno}</div>
               )}
             </FloatingLabel>
-
-            <FloatingLabel
-              controlId="whoToSeeName"
+            {/* <FloatingLabel
+              controlId="hostname"
               label="Who to see (Name)"
               className="mb-3"
             >
               <Form.Control
                 type="text"
                 placeholder="Name"
-                value={formData.whoToSeeName}
+                value={formData.hostname}
                 onChange={handleChange}
               />
-              {validationErrors.whoToSeeName && (
-                <div className="error">{validationErrors.whoToSeeName}</div>
+              {validationErrors.hostname && (
+                <div className="error">{validationErrors.hostname}</div>
               )}
-            </FloatingLabel>
-
-            <div className="visitorType mb-3">
+            </FloatingLabel> */}
+            {/* <div className="visitorType mb-3">
               <label htmlFor="" className="floatingLabel">
                 Purpose for Visit
               </label>
@@ -299,23 +293,32 @@ function FormFloatingBasicExample() {
                   checked={formData.purposeForVisit === "personal"}
                   onChange={handleChange}
                 />
+                <Form.Check
+                  inline
+                  label="Appointment"
+                  type="radio"
+                  id="appointment"
+                  name="purposeForVisit"
+                  value="appointment"
+                  checked={formData.purposeForVisit === "appointment"}
+                  onChange={handleChange}
+                />
               </div>
 
               {validationErrors.visitorType && (
                 <div className="error">{validationErrors.visitorType}</div>
               )}
-            </div>
-
-            <FloatingLabel controlId="comments" label="Comments">
+              </div> */}
+            <FloatingLabel controlId="hostemailaddress" label="Notes">
               <Form.Control
                 as="textarea"
-                placeholder="Leave a comment here"
+                placeholder="Leave a note here"
                 style={{ height: "100px" }}
-                value={formData.comments}
+                value={formData.hostemailaddress}
                 onChange={handleChange}
               />
-              {validationErrors.comments && (
-                <div className="error">{validationErrors.comments}</div>
+              {validationErrors.hostemailaddress && (
+                <div className="error">{validationErrors.hostemailaddress}</div>
               )}
             </FloatingLabel>
             {error && <div className="error">{error}</div>}

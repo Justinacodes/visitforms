@@ -20,23 +20,23 @@ function FormFloatingBasicExample() {
   const [validPhoneNumbers, setValidPhoneNumbers] = useState([]);
   const [validNames, setValidNames] = useState([]);
   const [phoneMask, setPhoneMask] = useState("+234 (___) ___-____"); // Default mask for Nigeria
-  // const apiUrl = "http://ezapi.issl.ng:3333/employee";
-  // const phoneNumbersUrl = "http://ezapi.issl.ng:3333/employeephone";
+  const apiUrl = "http://ezapi.issl.ng:3333/employee";
+  const phoneNumbersUrl = "http://ezapi.issl.ng:3333/employeephone";
   const visitationRequest = "http://ezapi.issl.ng:3333/visitationrequest";
 
   useEffect(() => {
     // Fetching employee phone numbers
-    fetch(visitationRequest)
+    fetch(phoneNumbersUrl)
       .then((response) => response.json())
       .then((data) =>
-        setValidPhoneNumbers(data.map((record) => record.hostphoneno))
+        setValidPhoneNumbers(data.map((record) => record.phoneno))
       )
       .catch((err) => console.log(err));
 
     //Fetching employee details
-    fetch(visitationRequest)
+    fetch(apiUrl)
       .then((response) => response.json())
-      .then((data) => setValidNames(data.map((record) => record.hostname)))
+      .then((data) => setValidNames(data.map((record) => record.name)))
       .catch((err) => console.log(err));
   }, []);
 

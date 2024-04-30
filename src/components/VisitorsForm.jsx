@@ -10,7 +10,7 @@ function FormFloatingBasicExample() {
     visitoremail: "",
     // visitorType: "",
     hostphoneno: "",
-    //hostname: "",
+    hostname: "",
     //used hostemailaddress from the endpoint for the comment field
     hostemailaddress: "",
   });
@@ -20,24 +20,24 @@ function FormFloatingBasicExample() {
   const [validPhoneNumbers, setValidPhoneNumbers] = useState([]);
   const [validNames, setValidNames] = useState([]);
   const [phoneMask, setPhoneMask] = useState("+234 (___) ___-____"); // Default mask for Nigeria
-  const apiUrl = "http://ezapi.issl.ng:3333/employee";
-  const phoneNumbersUrl = "http://ezapi.issl.ng:3333/employeephone";
+  // const apiUrl = "http://ezapi.issl.ng:3333/employee";
+  // const phoneNumbersUrl = "http://ezapi.issl.ng:3333/employeephone";
   const visitationRequest = "http://ezapi.issl.ng:3333/visitationrequest";
 
   useEffect(() => {
     // Fetching employee phone numbers
-    fetch(phoneNumbersUrl)
+    fetch(visitationRequest)
       .then((response) => response.json())
       .then((data) =>
-        setValidPhoneNumbers(data.map((record) => record.phoneno))
+        setValidPhoneNumbers(data.map((record) => record.hostphoneno))
       )
       .catch((err) => console.log(err));
 
     //Fetching employee details
-    // fetch(apiUrl)
-    //   .then((response) => response.json())
-    //   .then((data) => setValidNames(data.map((record) => record.name)))
-    //   .catch((err) => console.log(err));
+    fetch(visitationRequest)
+      .then((response) => response.json())
+      .then((data) => setValidNames(data.map((record) => record.hostname)))
+      .catch((err) => console.log(err));
   }, []);
 
   const handleChange = (e) => {
@@ -78,10 +78,10 @@ function FormFloatingBasicExample() {
       setError("Invalid phone number provided");
       return;
     }
-    // if (!validNames.includes(formData.hostname)) {
-    //   setError("Invalid name provided");
-    //   return;
-    // }
+    if (!validNames.includes(formData.hostname)) {
+      setError("Invalid name provided");
+      return;
+    }
 
     // Submit form data to the visitationRequest endpoint
     try {
@@ -103,7 +103,7 @@ function FormFloatingBasicExample() {
         visitoremail: "",
         // visitorType: "",
         hostphoneno: "",
-        //hostname: "",
+        hostname: "",
         hostemailaddress: "",
       });
       // Reset errors
@@ -253,7 +253,7 @@ function FormFloatingBasicExample() {
                 <div className="error">{validationErrors.hostphoneno}</div>
               )}
             </FloatingLabel>
-            {/* <FloatingLabel
+            <FloatingLabel
               controlId="hostname"
               label="Who to see (Name)"
               className="mb-3"
@@ -267,7 +267,7 @@ function FormFloatingBasicExample() {
               {validationErrors.hostname && (
                 <div className="error">{validationErrors.hostname}</div>
               )}
-            </FloatingLabel> */}
+            </FloatingLabel>
             {/* <div className="visitorType mb-3">
               <label htmlFor="" className="floatingLabel">
                 Purpose for Visit

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import Form from "react-bootstrap/Form";
+import { useMask } from "@react-input/mask";
 
 function FormFloatingBasicExample() {
   const [formData, setFormData] = useState({
@@ -17,6 +18,7 @@ function FormFloatingBasicExample() {
   const [validationErrors, setValidationErrors] = useState({});
   const [error, setError] = useState("");
   const [validPhoneNumbers, setValidPhoneNumbers] = useState([]);
+  const [phoneMask, setPhoneMask] = useState("+234 (___) ___-____");
   const [validNames, setValidNames] = useState([]);
   const apiUrl = "http://ezapi.issl.ng:3333/employee";
   const phoneNumbersUrl = "http://ezapi.issl.ng:3333/employeephone";
@@ -36,9 +38,14 @@ function FormFloatingBasicExample() {
 
   const handleChange = (e) => {
     const { id, value } = e.target;
+    let convertedValue = value;
+    if (id === "visitorphone" || id === "hostphoneno") {
+      // If the input is a phone number, ensure it's a string after masking
+      convertedValue = value.toString();
+    }
     setFormData((prevData) => ({
       ...prevData,
-      [id]: value,
+      [id]: convertedValue,
     }));
     setValidationErrors((prevErrors) => ({
       ...prevErrors,
@@ -56,7 +63,11 @@ function FormFloatingBasicExample() {
     }
     setValidationErrors(errors);
   
-    if (!validPhoneNumbers.includes(formData.hostphoneno)) {
+    // Ensure hostphoneno is a string
+    const hostPhoneNo = formData.hostphoneno.toString();
+    console.log(hostPhoneNo);
+  
+    if (!validPhoneNumbers.includes(hostPhoneNo)) {
       setError("Invalid phone number provided");
       return;
     }
@@ -67,7 +78,8 @@ function FormFloatingBasicExample() {
   
     try {
       // Fetch staff Id based on host phone number
-      const staffIdResponse = await axios.get(`${phoneNumbersUrl}?phoneno=eq.${formData.hostphoneno}`);
+      const staffIdResponse = await axios.get(`${phoneNumbersUrl}?phoneno=eq.${hostPhoneNo}`);
+      console.log(staffIdResponse)
       const fetchedStaffId = staffIdResponse.data[0]?.staffid; // Use optional chaining
       if (!fetchedStaffId) {
         setError("Staff Id not found for the provided phone number");
@@ -108,6 +120,27 @@ function FormFloatingBasicExample() {
   };
   
 
+  useEffect(() => {
+    if (formData.visitorphone.startsWith("+234")) {
+      // Set mask for Nigeria
+      setPhoneMask("+234 (___) ___-____");
+    } else {
+      // Default mask
+      setPhoneMask("+234 (___) ___-____");
+    }
+  }, [formData.visitorphone]);
+
+  const phoneNumberRef = useMask({
+    mask: phoneMask,
+    replacement: { _: /\d/ },
+  });
+
+  const whoToSeePhoneNumberRef = useMask({
+    mask: phoneMask,
+    replacement: { _: /\d/ },
+  });
+  
+
   return (
     <div className="formContainer">
       <div className="textContainer">
@@ -131,6 +164,7 @@ function FormFloatingBasicExample() {
           <FloatingLabel controlId="visitorphone" label="Phone Number" className="mb-3">
             <Form.Control
               type="tel"
+              ref={phoneNumberRef}
               placeholder="Phone Number"
               value={formData.visitorphone}
               onChange={handleChange}
@@ -149,6 +183,7 @@ function FormFloatingBasicExample() {
           <FloatingLabel controlId="hostphoneno" label="Who to see (Phone No)" className="mb-3">
             <Form.Control
               type="tel"
+              // ref={whoToSeePhoneNumberRef}
               placeholder="Phone Number"
               value={formData.hostphoneno}
               onChange={handleChange}

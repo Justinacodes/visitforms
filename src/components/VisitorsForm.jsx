@@ -11,6 +11,7 @@ function FormFloatingBasicExample() {
     visitoremail: "",
     hostphoneno: "",
     hostname: "",
+     //used hostemailaddress from the endpoint for the comment field
     hostemailaddress: "",
     plannedvisittime: "",
   });
@@ -135,10 +136,10 @@ function FormFloatingBasicExample() {
     replacement: { _: /\d/ },
   });
 
-  const whoToSeePhoneNumberRef = useMask({
-    mask: phoneMask,
-    replacement: { _: /\d/ },
-  });
+  // const whoToSeePhoneNumberRef = useMask({
+  //   mask: phoneMask,
+  //   replacement: { _: /\d/ },
+  // });
   
 
   return (

@@ -66,9 +66,10 @@ function FormFloatingBasicExample() {
   
     // Ensure hostphoneno is a string
     const hostPhoneNo = formData.hostphoneno.toString();
-    console.log(hostPhoneNo);
+    const cleanedPhoneNumber = hostPhoneNo.replace(/\D/g, "");
+    console.log(cleanedPhoneNumber);
   
-    if (!validPhoneNumbers.includes(hostPhoneNo)) {
+    if (!validPhoneNumbers.includes(cleanedPhoneNumber)) {
       setError("Invalid phone number provided");
       return;
     }
@@ -79,7 +80,7 @@ function FormFloatingBasicExample() {
   
     try {
       // Fetch staff Id based on host phone number
-      const staffIdResponse = await axios.get(`${phoneNumbersUrl}?phoneno=eq.${hostPhoneNo}`);
+      const staffIdResponse = await axios.get(`${phoneNumbersUrl}?phoneno=eq.${cleanedPhoneNumber}`);
       console.log(staffIdResponse)
       const fetchedStaffId = staffIdResponse.data[0]?.staffid; // Use optional chaining
       if (!fetchedStaffId) {
@@ -136,10 +137,10 @@ function FormFloatingBasicExample() {
     replacement: { _: /\d/ },
   });
 
-  // const whoToSeePhoneNumberRef = useMask({
-  //   mask: phoneMask,
-  //   replacement: { _: /\d/ },
-  // });
+  const whoToSeePhoneNumberRef = useMask({
+    mask: phoneMask,
+    replacement: { _: /\d/ },
+  });
   
 
   return (
@@ -184,7 +185,7 @@ function FormFloatingBasicExample() {
           <FloatingLabel controlId="hostphoneno" label="Who to see (Phone No)" className="mb-3">
             <Form.Control
               type="tel"
-              // ref={whoToSeePhoneNumberRef}
+              ref={whoToSeePhoneNumberRef}
               placeholder="Phone Number"
               value={formData.hostphoneno}
               onChange={handleChange}

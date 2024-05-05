@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import Form from "react-bootstrap/Form";
 import { useMask } from "@react-input/mask";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 
 function FormFloatingBasicExample() {
   const [formData, setFormData] = useState({
@@ -19,7 +22,7 @@ function FormFloatingBasicExample() {
   const [error, setError] = useState("");
   const [validPhoneNumbers, setValidPhoneNumbers] = useState([]);
   const [validNames, setValidNames] = useState([]);
-  const [phoneMask, setPhoneMask] = useState("+234 (___) ___-____"); // Default mask for Nigeria
+  const [phoneMask, setPhoneMask] = useState("___________"); 
   const apiUrl = "http://ezapi.issl.ng:3333/employee";
   const phoneNumbersUrl = "http://ezapi.issl.ng:3333/employeephone";
   const visitationRequest = "http://ezapi.issl.ng:3333/visitationrequest";
@@ -74,7 +77,13 @@ function FormFloatingBasicExample() {
     setValidationErrors(errors);
 
     //Validate hostname and hostphoneno against fetched data
-    if (!validPhoneNumbers.includes(formData.hostphoneno)) {
+
+    
+    
+    if (
+      formData.hostphoneno !== "" &&
+      !validPhoneNumbers.includes(formData.hostphoneno)
+    ) {
       setError("Invalid phone number provided");
       return;
     }
@@ -109,6 +118,7 @@ function FormFloatingBasicExample() {
       // Reset errors
       setError("");
       setValidationErrors({});
+      notify()
     } catch (error) {
       console.error("Error submitting form data:", error.message);
       setError("Failed to submit form data");
@@ -118,10 +128,10 @@ function FormFloatingBasicExample() {
   useEffect(() => {
     if (formData.visitorphone.startsWith("+234")) {
       // Set mask for Nigeria
-      setPhoneMask("+234 (___) ___-____");
+      setPhoneMask("___________");
     } else {
       // Default mask
-      setPhoneMask("+234 (___) ___-____");
+      setPhoneMask("___________");
     }
   }, [formData.visitorphone]);
 
@@ -134,6 +144,8 @@ function FormFloatingBasicExample() {
     mask: phoneMask,
     replacement: { _: /\d/ },
   });
+  const notify = () => toast.success("Successful!");
+
 
   return (
     <>
@@ -325,6 +337,7 @@ function FormFloatingBasicExample() {
             <button type="submit" id="btn">
               Submit Request
             </button>
+            <ToastContainer />
           </Form>
         </div>
       </div>

@@ -4,6 +4,9 @@ import Form from "react-bootstrap/Form";
 import { useMask } from "@react-input/mask";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Modal from "react-bootstrap/Modal";
+import Button from "react-bootstrap/Button";
+
 
 
 function FormFloatingBasicExample() {
@@ -84,11 +87,13 @@ function FormFloatingBasicExample() {
       formData.hostphoneno !== "" &&
       !validPhoneNumbers.includes(formData.hostphoneno)
     ) {
-      setError("Invalid phone number provided");
+       const notify = () => toast.warn("invalid phone number provided");
+       notify();
       return;
     }
     if (!validNames.includes(formData.hostname)) {
-      setError("Invalid name provided");
+      const notify = () => toast.warn("invalid name provided");
+      notify()
       return;
     }
 
@@ -118,7 +123,8 @@ function FormFloatingBasicExample() {
       // Reset errors
       setError("");
       setValidationErrors({});
-      notify()
+      handleShow()
+      //notify()
     } catch (error) {
       console.error("Error submitting form data:", error.message);
       setError("Failed to submit form data");
@@ -144,7 +150,12 @@ function FormFloatingBasicExample() {
     mask: phoneMask,
     replacement: { _: /\d/ },
   });
-  const notify = () => toast.success("Successful!");
+
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
 
 
   return (
@@ -334,9 +345,25 @@ function FormFloatingBasicExample() {
               )}
             </FloatingLabel>
             {error && <div className="error">{error}</div>}
-            <button type="submit" id="btn">
+            {/* <button type="submit" id="btn">
               Submit Request
-            </button>
+            </button> */}
+            <Button id="btn" type="submit">
+              Submit Request
+            </Button>
+            <Modal show={show} onHide={handleClose}>
+              <Modal.Header id="modalTitle">
+                <Modal.Title>Details Submitted Successfully!</Modal.Title>
+              </Modal.Header>
+              <Modal.Body id="modalBody">
+                Please wait while your information is being processed
+              </Modal.Body>
+              <Modal.Footer id="modalFooter">
+                <Button variant="primary" onClick={handleClose} id="modalBtn">
+                  Back to Home
+                </Button>
+              </Modal.Footer>
+            </Modal>
             <ToastContainer />
           </Form>
         </div>

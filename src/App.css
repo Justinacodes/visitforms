@@ -66,9 +66,12 @@ margin-top: 20px;
 #modalTitle{
   align-self: center;
   display: block;
+  border: none;
 }
 #modalBody{
   align-self: center;
+  border: none;
+  width: 75%;
 }
 #modalFooter{
   align-self: center;

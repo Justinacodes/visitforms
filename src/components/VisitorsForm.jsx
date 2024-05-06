@@ -6,6 +6,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
+import { ImCheckboxChecked } from "react-icons/im";
 
 
 
@@ -351,16 +352,18 @@ function FormFloatingBasicExample() {
             <Button id="btn" type="submit">
               Submit Request
             </Button>
-            <Modal show={show} onHide={handleClose}>
+            <Modal show={show} onHide={handleClose} className="modalBox">
               <Modal.Header id="modalTitle">
-                <Modal.Title>Details Submitted Successfully!</Modal.Title>
+                <ImCheckboxChecked id="checkbox"/>
+                <Modal.Title>Request Submitted Successfully!</Modal.Title>
               </Modal.Header>
               <Modal.Body id="modalBody">
-                Please wait while your information is being processed
+                Your request has been submitted, please wait while your request
+                is being processed
               </Modal.Body>
               <Modal.Footer id="modalFooter">
                 <Button variant="primary" onClick={handleClose} id="modalBtn">
-                  Back to Home
+                  Return Home
                 </Button>
               </Modal.Footer>
             </Modal>

@@ -84,7 +84,10 @@ margin-top: 20px;
 #checkbox{
   font-size: 50px;
   align-self: center;
+      border-radius: 30px;
+    margin-bottom: 22px;
 }
+
 .modalBox{
   text-align: center;
 }

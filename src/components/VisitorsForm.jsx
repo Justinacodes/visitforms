@@ -84,16 +84,15 @@ function FormFloatingBasicExample() {
 
     
     
-    if (
-      formData.hostphoneno !== "" &&
-      !validPhoneNumbers.includes(formData.hostphoneno)
+    if (!validPhoneNumbers.includes(formData.hostphoneno)
     ) {
-       const notify = () => toast.warn("invalid phone number provided");
+       const notify = () => toast.warn("Host credentials don't match, provide valid host number");
        notify();
       return;
     }
     if (!validNames.includes(formData.hostname)) {
-      const notify = () => toast.warn("invalid name provided");
+      const notify = () =>
+        toast.warn("Host credentials don't match, provide valid host name");
       notify()
       return;
     }
@@ -263,7 +262,7 @@ function FormFloatingBasicExample() {
 */}{" "}
             <FloatingLabel
               controlId="hostphoneno"
-              label="Who to see (Phone No)"
+              label="Host Phone Number"
               className="mb-3"
             >
               <Form.Control
@@ -279,7 +278,7 @@ function FormFloatingBasicExample() {
             </FloatingLabel>
             <FloatingLabel
               controlId="hostname"
-              label="Who to see (Name)"
+              label="Host Name"
               className="mb-3"
             >
               <Form.Control

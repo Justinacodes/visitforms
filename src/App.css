@@ -1,16 +1,13 @@
-*{
-  justify-content: center;
-}
 
 .form{
     padding: 10px;
   width: 50rem;
 
 } 
-/* .formContainer{
+.formContainer{
   margin-left: 25%;
   margin-right: 25%;
-} */
+} 
 #email{
   margin-bottom: 15px;
 }
@@ -93,4 +90,40 @@ margin-top: 20px;
 
 .modalBox{
   text-align: center;
+}
+
+/* Homepage styling */
+.homePageBg{
+  background-image: url("/src/assets/homepagebg.png");
+  width: 100vw;
+  height: 100vh;
+      text-align: center;
+    padding: 10rem;
+    background-size: cover;
+ 
+}
+.typewriterEffect{
+  font-size: 50px;
+  font-weight: 800;
+  line-height: 50px;
+  margin-bottom: 25px;
+}
+.homepageText{
+  font-size: 22px;
+  line-height: 20px;
+  margin-top: 25px;
+}
+.homepageBtn{
+  color: #fff;
+    border: #000 1px solid;
+    padding: 10px;
+    width: 200px;
+    border-radius: 10px;
+    background-color: #000;
+    margin-top: 25px;
+    
+}
+.homepageBtn:hover{
+  border: #000 1px solid;
+  background-color: #000000a0;
 }
